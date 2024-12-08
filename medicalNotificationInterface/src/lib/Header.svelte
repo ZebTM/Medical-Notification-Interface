@@ -10,10 +10,14 @@
   @import '../colors.css';
 
   .header {
-    background: var( --red);
+    background: var( --header-blue);
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 2vh;
+    padding: 1.4vh;
+    border-bottom: 1px solid var( --blue );
+    color: var( --white);
+    font-weight: bold;
+    font-size: large;
   }
 </style>
