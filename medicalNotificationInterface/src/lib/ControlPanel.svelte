@@ -1,8 +1,13 @@
 <script>
-  import AddMessageCommand from './AddMessageCommand.svelte'
-  import { Textarea } from '$lib/components/ui/textarea'
+  import AddMessageCommand from './AddMessageCommand.svelte';
+  import { Textarea } from '$lib/components/ui/textarea';
   import { Button } from '$lib/components/ui/button';
   import { Input } from '$lib/components/ui/input';
+  import { Label } from '$lib/components/ui/label';
+  import * as RadioGroup from '$lib/components/ui/radio-group';
+  
+  let props = $props();
+  let addMessage = props.addMessage;
 
   let onClickDoctor = () => {
     alert('Clicked Doctor')
@@ -11,11 +16,16 @@
   function onClickFamily() {
     console.log("Click Family")
   }
-
+  let user = $state('family');
   let message = ''; // To store the input value
-  const handleSubmit = () => {
-    console.log('Message:', message); // Handle form submission
-    alert(`Submitted Message: ${message}`);
+  const handleSubmit = ( event ) => {
+    if ( message.length < 2 ) {
+      return;
+    }
+    console.log('Message:', user); // Handle form submission
+    addMessage( message, user );
+
+    event.target.reset();
   };
 
 </script>
@@ -23,6 +33,21 @@
 <div class="control-panel">
   <div class="control-panel-header">
     <h1> Control Panel </h1>
+  </div>
+  <div class="user-selection content-right">
+    <h1 class="font-large font-bold mb-2 ">Selected User: </h1> 
+    <RadioGroup.Root 
+      
+      bind:value={user}>
+     <div class="flex items-center space-x-2" id="test">
+      <RadioGroup.Item value="doctor" id="doctor" />
+      <Label for="option-one">Doctor</Label>
+      </div>
+      <div class="flex items-center space-x-2" id="test1">
+        <RadioGroup.Item value="family" id="family" />
+        <Label for="option-two">Family</Label>
+      </div>
+    </RadioGroup.Root> 
   </div>
 
  <!--  <div class="Message"> -->
@@ -36,11 +61,11 @@
   
 <form
   on:submit|preventDefault={handleSubmit}
-  class="space-y-4 max-w-md mx-auto mt-10"
+  class="space-y-4 mt-5"
 >
   <div class="form-group">
-    <label for="message" class="block text-sm font-medium">
-      Your Message
+    <label for="message" class="block text-sm font-large font-bold text-left">
+      Write a message
     </label>
     <Input
       id="message"
@@ -87,5 +112,11 @@
     margin-bottom: 1vh;
     font-weight: bold;
     font-size: large;
+  }
+
+  .user-selection {
+    text-align: left;
+    padding-bottom: 1vh;
+    border-bottom: 1px solid var( --blue );
   }
 </style>

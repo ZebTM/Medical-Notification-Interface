@@ -5,11 +5,13 @@
   import Counter from './lib/Counter.svelte';
   import Header from './lib/Header.svelte';
   import ControlPanel from './lib/ControlPanel.svelte';
+  import { ScrollArea } from '$lib/components/ui/scroll-area';
   import './app.css';
   import Message from '$lib/message.svelte'
+  import DoctorImg from '../public/images/doctor.jpg'
+  import SadMan from '../public/images/sad-man-and-rain.jpg'
 
-
-  const doctorMessages = [
+  let doctorMessages = $state([
     "Hello, how are you feeling today?",
     "Make sure to take your medication as prescribed.",
     "Don't forget to drink plenty of water and stay hydrated.",
@@ -20,10 +22,10 @@
     "If the pain persists, please contact me immediately.",
     "Remember to maintain a balanced diet for better health.",
     "It's important to get at least 8 hours of sleep every night."
-  ];
+  ]);
 
 
-  const familyQuestions = [
+  let familyQuestions = $state([
     "What is the diagnosis, and what does it mean for my loved one?",
     "What are the treatment options, and which one do you recommend?",
     "Are there any risks or side effects we should be aware of?",
@@ -39,34 +41,53 @@
     "Can we contact you if we have further questions or concerns?",
     "What should we do if their symptoms worsen suddenly?",
     "Is there a plan in place for managing pain or discomfort?"
-  ];
+  ]);
+
+
+  let addMessage = ( message, user) => { 
+    if ( user !== 'doctor' && user !== 'family' ) {
+      return
+    }
+
+    if ( user === 'doctor' ) {
+      doctorMessages.unshift( message )
+      return
+    }
+
+    familyQuestions.unshift( message )
+  }
+
+
 </script>
 
 <main>
   <div class="demo-wrapper">
     <div class="demo column">
-      <Header title="My Svelte App" />
+      <Header title="Doctor to Patient Communicate Channel" />
 
       <div class="column-wrapper">
         <div class="leftColumn">
-          <h1> Messages from Doctor Daniels </h1>
-
+          <h1 class="font-bold"> Messages from Doctor Daniels </h1>
+          <ScrollArea class="h-[80vh]">
           {#each doctorMessages as message}
-            <Message messageContent={message} />
+            <Message messageContent={message} img={DoctorImg}/>
           {/each}
+          </ScrollArea>
         </div>
 
         <div class="rightColumn">
-          <h1> Messages from the family </h1>
+          <h1 class="font-bold"> Messages from the family </h1>
+          <ScrollArea class="h-[80vh]">
           {#each familyQuestions as message}
-            <Message messageContent={message} />
+            <Message messageContent={message} img={SadMan} />
           {/each}
+          </ScrollArea>
         </div>
       </div>
     </div>
 
     <div class="control-panel column">
-      <ControlPanel />
+      <ControlPanel addMessage={addMessage} />
     </div>
   </div>
 </main>

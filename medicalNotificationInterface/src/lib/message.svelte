@@ -1,8 +1,15 @@
 <script>
+  import * as Avatar from '$lib/components/ui/avatar';
   export let messageContent// Message to display
+  export let img;
+  export let imgFallBack;
 </script>
 
 <div class="message-container">
+  <Avatar.Root class="avatar">
+    <Avatar.Image src={img} alt="@shadcn" />
+    <Avatar.Fallback>{imgFallBack}</Avatar.Fallback>
+  </Avatar.Root>  
   <p class="message-text">{messageContent}</p>
 </div>
 
@@ -23,6 +30,11 @@
     color: #1a202c; /* Darker text for readability */
     font-size: 1rem; /* Base font size */
     line-height: 1.5; /* Better readability */
+    flex: 11;
+  }
+
+  .avatar {
+    flex: 1;
   }
 </style>
 
